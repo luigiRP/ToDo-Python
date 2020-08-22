@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, To_do
 #from models import Person
 
 app = Flask(__name__)
@@ -43,6 +43,27 @@ def handle_hello():
 def user_adder():
     User.addUser()
     return "Funciono"
+
+@app.route('/user/Luigi', methods=['POST'])
+def add_to_do():
+    data=request.json
+    
+    To_do.add_to_do(data)
+    return "Se agrego una tarea"
+
+@app.route('/user/Luigi', methods=['GET'])
+def get_to_do():
+    todo_list=To_do.get_to_do()
+    print(todo_list)
+    return "Mostrando tareas"
+    
+@app.route('/user/Luigi', methods=['DELETE'])
+def delete_to_do():
+    id_deleted=request.json
+    print(id_deleted)
+    return "Borrando tarea"
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
